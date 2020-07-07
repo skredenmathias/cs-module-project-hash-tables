@@ -1,3 +1,52 @@
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+class LinkedList:
+    def __init__(self):
+        self.head = None
+        
+    def find(self, value): # get
+      #start at the head
+      #loop through the list
+      #find value
+      #return the node
+        cur = self.head
+
+        while cur is not None:
+            if cur.value == value:
+                return cur
+            cur = cur.next
+
+        return None
+
+    def delete(self, value):
+        # go to index
+        cur = self.head
+
+        # what if the value is at the head?
+        if cur.value == value:
+            self.head = cur.next
+            return cur
+        # make prev.next skip
+        prev = cur
+        cur = cur.next
+
+        while cur is not None:
+            if cur.value == value:
+                prev.next = cur.next
+                return cur
+            else:
+                prev = cur
+                cur = cur.next
+
+        return None
+      
+    def insert_at_head(self, node):
+        node.next = self.head
+        self.head = node
+
+
 class HashTableEntry:
     """
     Linked List hash table key/value pair
@@ -20,8 +69,11 @@ class HashTable:
     Implement this.
     """
 
-    def __init__(self, capacity):
-        # Your code here
+    def __init__(self, capacity, count=0):
+        self.capacity = capacity
+        self.storage = [None] * capacity
+        self.count = count
+        # self.storage = [LinkedList()] * capacity
 
 
     def get_num_slots(self):
@@ -34,7 +86,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return len(self.storage)
 
 
     def get_load_factor(self):
@@ -43,7 +95,10 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # Elements in hash table / number of slots
+        # if > 0.7:
+            # use resize
+
 
 
     def fnv1(self, key):
@@ -53,8 +108,14 @@ class HashTable:
         Implement this, and/or DJB2.
         """
 
-        # Your code here
+        FNV_prime = 1099511628211
+        FNV_offset_basis = 14695981039346656037
+        hash = FNV_offset_basis
 
+        for s in key:
+            hash = hash * FNV_prime
+            hash = hash ^ ord(s)
+        return hash
 
     def djb2(self, key):
         """
@@ -64,14 +125,13 @@ class HashTable:
         """
         # Your code here
 
-
-    def hash_index(self, key):
+    def hash_index(self, key): # get_slot(s)
         """
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.fnv1(key) % self.capacity
+        # return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """
@@ -81,8 +141,29 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # Find the slot for the key
+        slot = self.hash_index(key)
+        # Search the linked list (at the slot?) for the key
+        if self.storage[slot] == None:
+            self.storage[slot] = HashTableEntry(key, value)
+            self.count += 1
+        # elif self.storage[slot] is not None:
+        else:
+            current = self.storage[slot]
+            while True:
+                if current.key == key:
+                    current.value = value
+                    break
+                if current.next is None:
+                    current.next = HashTableEntry(key, value)
+                    self.count += 1
+                    break
+                current = current.next
+            #   Somehow traverse "LL" and check if key = key
+            # if so: update value to new value
+            # else (we reach the end of "LL"): insert value
 
+        # increment the load count
 
     def delete(self, key):
         """
@@ -92,10 +173,21 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # Find the slot for the key
+        self.put(key, None)
+
+        slot = self.hash_index(key)
+        # Search the linked list for the key
+        at self.storage[slot]:
+            LinkedList.find(___)
+        # If found, delete it from the linked list, then return the deleted value
+
+        # If not found, return None
 
 
-    def get(self, key):
+        # decrement the load count
+
+    def get(self, key): # find
         """
         Retrieve the value stored with the given key.
 
@@ -103,7 +195,14 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # Find the slot for the key
+        slot = self.hash_index(key)
+        # Search the linked list for the key
+        at self.storage[slot]:
+            LinkedList.find()
+        # If found, return the value
+        # If not found, return None
+        return self.storage[slot]
 
 
     def resize(self, new_capacity):
@@ -113,7 +212,11 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # Create new array double the size
+        # traverse each element in old hash table
+            # for each:
+                # rehash to new array
+                    # put it there
 
 
 
