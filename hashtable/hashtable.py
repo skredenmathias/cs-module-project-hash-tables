@@ -1,52 +1,3 @@
-class Node:
-    def __init__(self, value):
-        self.value = value
-        self.next = None
-class LinkedList:
-    def __init__(self):
-        self.head = None
-        
-    def find(self, value): # get
-      #start at the head
-      #loop through the list
-      #find value
-      #return the node
-        cur = self.head
-
-        while cur is not None:
-            if cur.value == value:
-                return cur
-            cur = cur.next
-
-        return None
-
-    def delete(self, value):
-        # go to index
-        cur = self.head
-
-        # what if the value is at the head?
-        if cur.value == value:
-            self.head = cur.next
-            return cur
-        # make prev.next skip
-        prev = cur
-        cur = cur.next
-
-        while cur is not None:
-            if cur.value == value:
-                prev.next = cur.next
-                return cur
-            else:
-                prev = cur
-                cur = cur.next
-
-        return None
-      
-    def insert_at_head(self, node):
-        node.next = self.head
-        self.head = node
-
-
 class HashTableEntry:
     """
     Linked List hash table key/value pair
@@ -96,7 +47,12 @@ class HashTable:
         Implement this.
         """
         # Elements in hash table / number of slots
+        if (self.count / self.capacity) > 0.7:
+            self.resize(2*self.capacity)
         # if > 0.7:
+        if (self.count / self.capacity) < 0.2:
+            if (self.capacity / 2) >= MIN_CAPACITY:
+                self.resize(0.5*self.capacity)
             # use resize
 
 
@@ -143,27 +99,26 @@ class HashTable:
         """
         # Find the slot for the key
         slot = self.hash_index(key)
-        # Search the linked list (at the slot?) for the key
+        # Search the linked list (at the slot) for the key
         if self.storage[slot] == None:
             self.storage[slot] = HashTableEntry(key, value)
             self.count += 1
         # elif self.storage[slot] is not None:
         else:
             current = self.storage[slot]
+            # True loop so that we can finish loop at the last node.
             while True:
+                # If keys match, update the value
                 if current.key == key:
                     current.value = value
                     break
+                # If reach end of LL without finding key, insert the key, value.
                 if current.next is None:
                     current.next = HashTableEntry(key, value)
                     self.count += 1
                     break
+                # traverse
                 current = current.next
-            #   Somehow traverse "LL" and check if key = key
-            # if so: update value to new value
-            # else (we reach the end of "LL"): insert value
-
-        # increment the load count
 
     def delete(self, key):
         """
@@ -174,18 +129,26 @@ class HashTable:
         Implement this.
         """
         # Find the slot for the key
-        self.put(key, None)
-
         slot = self.hash_index(key)
+        # Set current
+        current = self.storage[slot]
+        prev = None
+
         # Search the linked list for the key
-        at self.storage[slot]:
-            LinkedList.find(___)
-        # If found, delete it from the linked list, then return the deleted value
+        while current.key != key and current.next is not None:
+            prev = current
+            current = current.next
 
-        # If not found, return None
+        if current.key == key and prev is not None:
+            prev.next = current.next
+            self.count -= 1
 
+        elif current.key == key:
+            self.storage[slot] = current.next
+            self.count -= 1
 
-        # decrement the load count
+        else:
+            return 'key not found.'
 
     def get(self, key): # find
         """
@@ -198,11 +161,13 @@ class HashTable:
         # Find the slot for the key
         slot = self.hash_index(key)
         # Search the linked list for the key
-        at self.storage[slot]:
-            LinkedList.find()
-        # If found, return the value
-        # If not found, return None
-        return self.storage[slot]
+        current = self.storage[slot]
+        while current is not None:
+            if current.key == key:
+                return current.value
+            else:
+                current = current.next
+        return None
 
 
     def resize(self, new_capacity):
@@ -212,12 +177,25 @@ class HashTable:
 
         Implement this.
         """
-        # Create new array double the size
-        # traverse each element in old hash table
-            # for each:
-                # rehash to new array
-                    # put it there
+        # Create new storage
+        new_storage = [None] * new_capacity
+        # store the old storage
+        old_storage = self.storage
+        # Set new storage
+        self.storage = new_storage
+        # Set new capacity
+        self.capacity = new_capacity
+        # reset count
+        self.count = 0
 
+        # traverse each element in old hash table
+        for element in old_storage:
+            current = element
+            # rehash to new array
+            while current is not None:
+                self.put(current.key, current.value)
+            # Check if empty
+                current = current.next
 
 
 if __name__ == "__main__":
