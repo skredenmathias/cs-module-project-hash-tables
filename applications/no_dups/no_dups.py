@@ -8,12 +8,16 @@ def no_dups(s):
 
     cache = {}
     new_string = ''
+    first_word = True
     for word in s.split():
         if word not in cache:
             cache[word] = 1
-            new_string.join(cache)
+            if first_word:
+                new_string += word
+                first_word = False
+            else:
+                new_string += ' ' + word
     return new_string
-    for word in s.split():
 
 
     # set_1 = set(s.split())

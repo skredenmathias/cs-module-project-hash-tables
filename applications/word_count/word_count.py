@@ -1,7 +1,20 @@
 def word_count(s):
     word_table = {}
 
-    # s = [c for c in s if c.isalnum()]
+    # s = ''.join(c for c in s if c.isalpha())
+    # print(s)
+
+    removedLetters = [
+        '"', ':', ';', ',', '.', '-', '+', '=', '/', '\\', "|", '[', ']', '{', '}', '(', ')', '*', '^', '&'
+    ]
+
+    # for letter in s:
+    #     if letter in removedLetters:
+    #         s = s.replace(letter, '')
+
+    for letter in removedLetters:
+        s = s.replace(letter, '')
+
     for word in s.split():
 
         if word.lower() not in word_table:
@@ -10,7 +23,6 @@ def word_count(s):
             word_table[word.lower()] += 1
     return word_table
 
-    
 
 if __name__ == "__main__":
     print(word_count(""))
@@ -20,4 +32,3 @@ if __name__ == "__main__":
 
 # {'hello': 2, 'my': 2, 'cat': 2, 'and': 1, "doesn't": 1, 'say': 1, 'back': 1})
 # {'hello,': 1, 'my': 2, 'cat.': 1, 'and': 1, 'cat': 1, "doesn't": 1, 'say': 1, '"hello"': 1, 'back.': 1}
-# ''.join(e for e in string if e.isalnum())

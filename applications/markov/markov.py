@@ -10,16 +10,18 @@ import random
 
 # Read in all the words in one go
 with open("input.txt") as f:
-    words = f.read()
+    words = f.read().split()
     cache = {}
     # prev = None
-    for word in words.split():
+    # for word in words.split():
+    for i in range(len(words):
+        word = words[i]
         # TODO: analyze which words can follow other words
         # Key is word
         # value is next word
         # value must not be updated, but added onto
         if word not in cache:
-            cache[word] = ___
+            cache[word] = 
 
 
 # TODO: construct 5 random sentences

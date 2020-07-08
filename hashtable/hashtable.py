@@ -53,9 +53,6 @@ class HashTable:
         if (self.count / self.capacity) < 0.2:
             if (self.capacity / 2) >= MIN_CAPACITY:
                 self.resize(0.5*self.capacity)
-            # use resize
-
-
 
     def fnv1(self, key):
         """
