@@ -14,16 +14,47 @@ with open("input.txt") as f:
     cache = {}
     # prev = None
     # for word in words.split():
-    for i in range(len(words):
+    for i in range(len(words)):
         word = words[i]
         # TODO: analyze which words can follow other words
-        # Key is word
-        # value is next word
-        # value must not be updated, but added onto
         if word not in cache:
-            cache[word] = 
+            if i+1 in range(len(words)):
+                cache[word] = [words[i+1]]
+        else:
+            if i+1 in range(len(words)):
+                cache[word].append(words[i+1])
 
 
 # TODO: construct 5 random sentences
-# Your code here
+#   Pick random key
+    #   Could improve code by picking random key.
+def random_sentences():
+    sentence = ''
+    for i in range(5):
+        count = 0
+        # for key, value in range(7):
+        for key, value in cache.items():
+            if count > random.randrange(5, 10):
+                break
+            # sentence = ''
+            sentence += key
+            sentence += ' '
+            sentence += random.choice(value)
+            sentence += ' '
+            count += 1
 
+    print(sentence)
+random_sentences()
+
+# print(sentence)
+    
+
+# key, value = random.choice(list(d.items()))
+
+
+    #   Pick random value from list of values associated with that key
+#   Repeat
+#   Stop after X iterations
+
+
+# print(random.choice(list(cache.values())))
