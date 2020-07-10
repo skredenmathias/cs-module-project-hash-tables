@@ -31,20 +31,18 @@ with open("input.txt") as f:
 def random_sentences():
     sentence = ''
     for i in range(5):
-        count = 0
-        # for key, value in range(7):
-        for key, value in cache.items():
-            if count > random.randrange(5, 10):
-                break
+        key = random.choice(list(cache.keys()))
+        # for key, value in cache.items():
+        for i in range(15):
             # sentence = ''
             sentence += key
             sentence += ' '
-            sentence += random.choice(value)
+            # sentence += random.choice(value)
             sentence += ' '
-            count += 1
-
-    print(sentence)
-random_sentences()
+            key = random.choice(cache[key])
+    return sentence
+    
+print(random_sentences())
 
 # print(sentence)
     

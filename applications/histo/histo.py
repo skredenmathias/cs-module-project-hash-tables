@@ -11,19 +11,16 @@ histo = {}
 def histogram(s):
     # This function takes a single filename string as an argument
     # It should open the file, and work through it to produce the output.
-    with open("robin.txt") as s:
-        words = s.read()
+    with open(s) as f:
+        words = f.read()
 
         # If the input contains no ignored characters, print nothing
-        no_ignored_characters = False
         # Ignore each of the following characters:
-        if letter in removedLetters: #?
-            no_ignored_characters = True
-            for letter in removedLetters:
-                s = s.replace(letter, '')
+        for letter in removedLetters:
+            words = words.replace(letter, '')
             
         # Split the strings into words on any whitespace.
-        for word in s.split():
+        for word in words.split():
 
             # Print a histogram showing the word count for each word, 
             # one hash mark for every occurrence of the word.
@@ -34,10 +31,12 @@ def histogram(s):
                 histo[word.lower()] += '#'
 
         # Output will be first ordered by the number of words, then by the word (alphabetically).
+        sorted_hist = sorted(histo.items(), key=lambda x: (x[1], x[0]), reverse=True)
 
-        return sorted(histo.items(), key=lambda x: (x[1], x[0]))
+        
+        return 
 
-
+print(histogram('robin.txt'))
 
 
 
